@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:multi_select_demo/item.dart';
 import 'package:multi_select_demo/list_item.dart';
 import 'package:random_color/random_color.dart';
+import 'package:lorem_ipsum/lorem_ipsum.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Your Items'),
+      home: MyHomePage(title: 'Multi Select Demo'),
     );
   }
 }
@@ -43,6 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ColorHue.orange
   ];
   final List<Key> _selectedItemKeys = [];
+  final RandomColor randomColorGenerator = RandomColor();
 
   List<Item> _items;
   List<Key> _itemKeys;
@@ -52,46 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     setState(() {
-      RandomColor randomColorGenerator = RandomColor();
-      _items = [
-        Item(
-          id: 1,
-          title: "Test1",
-          subTitle: "Lorem ipsum dolor sit amet",
-          backgroundColor: randomColorGenerator.randomColor(
-            colorHue: ColorHue.multiple(colorHues: _hueType),
-            colorSaturation: ColorSaturation.random,
-          ),
-        ),
-        Item(
-          id: 2,
-          title: "Test2",
-          subTitle: "Cum sociis natoque penatibus et magnis",
-          backgroundColor: randomColorGenerator.randomColor(
-            colorHue: ColorHue.multiple(colorHues: _hueType),
-            colorSaturation: ColorSaturation.random,
-          ),
-        ),
-        Item(
-          id: 3,
-          title: "Test3",
-          subTitle: "Integer tincidunt",
-          backgroundColor: randomColorGenerator.randomColor(
-            colorHue: ColorHue.multiple(colorHues: _hueType),
-            colorSaturation: ColorSaturation.random,
-          ),
-        ),
-        Item(
-          id: 4,
-          title: "Test4",
-          subTitle: "Nam eget dui",
-          backgroundColor: randomColorGenerator.randomColor(
-            colorHue: ColorHue.multiple(colorHues: _hueType),
-            colorSaturation: ColorSaturation.random,
-          ),
-        ),
-      ];
-
+      _items = [];
       _itemKeys = [];
     });
   }
@@ -117,6 +80,11 @@ class _MyHomePageState extends State<MyHomePage> {
             isSelected: _selectedItemKeys.contains(key),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _createdItem,
+        tooltip: 'Add Item',
+        child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
@@ -168,6 +136,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
       _selectedItemKeys.clear();
       _isSelecting = false;
+    });
+  }
+
+  void _createdItem() {
+    setState(() {
+      var id = _items.length + 1;
+      final newItem = Item(
+        id: id,
+        title: 'Test $id',
+        subTitle: loremIpsum(words: 10),
+        backgroundColor: randomColorGenerator.randomColor(
+          colorHue: ColorHue.multiple(colorHues: _hueType),
+          colorSaturation: ColorSaturation.random,
+        ),
+      );
+      _items.add(newItem);
     });
   }
 

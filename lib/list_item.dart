@@ -38,7 +38,7 @@ class _ListItemState extends State<ListItem> {
                   ),
             title: Text(widget.item.title),
             subtitle: Text(widget.item.subTitle),
-            trailing: Text(widget.key.toString()),
+            trailing: buildTrailingText(),
             onLongPress: () => widget.onLongPress(widget.key),
             onTap: () => widget.onTap(widget.key),
             selected: widget.isSelected,
@@ -46,5 +46,13 @@ class _ListItemState extends State<ListItem> {
         ],
       ),
     );
+  }
+
+  Text buildTrailingText() => Text(_parseKeyValue(widget.key));
+
+  String _parseKeyValue(Key key) {
+    ValueKey<String> valueKey = key;
+
+    return valueKey.value;
   }
 }
